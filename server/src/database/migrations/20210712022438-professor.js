@@ -12,7 +12,9 @@ module.exports = {
       id_sala: {
         type: Sequelize.INTEGER,
         allowNull: true,
-        references: { model: 'salas', key: 'id'}
+        references: { model: 'salas', key: 'id'},
+        onUpdate: 'SET NULL',
+        onDelete: 'SET NULL'
       },
       nome: {
         type: Sequelize.STRING(150),

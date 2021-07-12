@@ -12,7 +12,9 @@ module.exports = {
       id_professor: {
         type: Sequelize.INTEGER,
         allowNull: true,
-        references: { model: 'professores', key: 'id'}
+        references: { model: 'professores', key: 'id'},
+        onUpdate: 'SET NULL',
+        onDelete: 'SET NULL'
       },
       nome: {
         type: Sequelize.STRING(150),
