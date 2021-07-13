@@ -1,4 +1,5 @@
 const request = require('supertest');
+const faker = require('faker');
 const app = require('../../../src/app');
 const truncate = require('../../utils/truncate');
 const factory = require('../../factories');
@@ -28,6 +29,18 @@ describe('PATCH /api/sala', () => {
       .patch(`/api/sala/${sala.id}`)
       .send({
         nome_sala: ''
+      });
+
+    expect(response.status).toBe(400);
+  });
+
+  it('should not be able to patch a sala with a name larger than 150 characters', async () => {
+    const sala = await factory.create('Sala');
+
+    const response = await request(app)
+      .patch(`/api/sala/${sala.id}`)
+      .send({
+        nome_sala: faker.lorem.words(150),
       });
 
     expect(response.status).toBe(400);
