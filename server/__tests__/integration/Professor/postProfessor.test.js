@@ -28,7 +28,7 @@ describe('POST /api/professor', () => {
         nome: 'professor test',
         id_sala: sala.id,
       });
-      console.log(response.body)
+
     expect(response.status).toBe(200);
     expect(response.body.sala.id).toBe(sala.id);
   });
