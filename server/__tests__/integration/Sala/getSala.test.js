@@ -35,7 +35,7 @@ describe('GET /api/sala', () => {
     expect(response.body.nome_sala).toBe('sala1');
   });
 
-  it('should return 404 when trying to patch a sala that does not exists', async () => {
+  it('should return 404 when trying to get a sala that does not exists', async () => {
     const response = await request(app)
       .get('/api/sala/3451');
 
