@@ -9,7 +9,7 @@
     "predev": "NODE_ENV=development npm run genDb",
     "dev": "NODE_ENV=development nodemon index --ignore __tests__",
     "pretest": "NODE_ENV=test npm run genDb",
-    "test": "NODE_ENV=test jest --runInBand; sequelize-cli db:migrate:undo:all",
+    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles; NODE_ENV=test sequelize-cli db:migrate:undo:all",
     "genDb": "npm run createDb; npm run migrateDb",
     "createDb": "sequelize-cli db:create",
     "migrateDb": "sequelize-cli db:migrate"
