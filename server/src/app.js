@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 const routes = require('./routes');
 
 class AppController {
@@ -12,6 +13,12 @@ class AppController {
   }
 
   middlewares() {
+    if(process.env.NODE_ENV !== 'production') {
+      this.express.use(cors({
+        origin: '*'
+      }));
+    }
+    
     this.express.use(morgan('common'));
     this.express.use(express.json());
   }

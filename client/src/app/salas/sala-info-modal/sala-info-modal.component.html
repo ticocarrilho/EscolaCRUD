@@ -1,0 +1,33 @@
+<h1 mat-dialog-title>Informações da Sala</h1>
+
+<div *ngIf="loading; else content" fxLayoutAlign="center center">
+  <mat-spinner></mat-spinner>
+</div>
+
+<ng-template #content>
+  <div mat-dialog-content>
+    <h3>Nome da Sala: <span class="medium-weight">{{ sala.nome_sala }}</span></h3>
+  
+    <p *ngIf="sala.professor && sala.professor.length === 0">
+      Essa sala não possui nenhum professor.
+    </p>
+    <div *ngIf="sala.professor && sala.professor.length > 0">
+      <h3>Lista de Professores</h3>
+      <mat-selection-list [multiple]="false">
+        <mat-list-option *ngFor="let professor of sala.professor">
+          {{ professor.nome }}
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+  </div>
+  
+  <div mat-dialog-actions fxLayoutAlign="space-around center">
+    <button mat-button (click)="onCancelClick()" cdkFocusInitial>Fechar</button>
+    <button mat-button [mat-dialog-close]="getActionBody('Deletar Sala')">
+        Deletar Sala
+    </button>
+    <button mat-button [mat-dialog-close]="getActionBody('Editar Sala')">
+      Editar Sala
+    </button>
+  </div>
+</ng-template>

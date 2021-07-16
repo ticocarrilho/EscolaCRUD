@@ -1,13 +1,40 @@
-const { Sala } = require('../models');
+const { Sala, Professor } = require('../models');
 
 module.exports = {
   async index(req, res) {
     try {
-      const salas = await Sala.findAll({
-        attributes: ['id', 'nome_sala']
+      const { page, search } = req.headers;
+
+      const totalCount = await Sala.count({
+        ...((search !== undefined && search !== '') && {
+          where: {
+            nome_sala: search
+          }
+        })
       });
-      
-      return res.json(salas);
+
+      const salas = await Sala.findAll({
+        ...((search !== undefined && search !== '') && {
+          where: {
+            nome_sala: search
+          }
+        }),
+        ...((page !== undefined && page !== '') && {
+          offset: page * 10,
+          limit: 10,
+        }),
+        order: [
+          ['id', 'ASC'],
+        ],
+        attributes: ['id', 'nome_sala'],
+        include: [{
+          model: Professor,
+          as: 'professor',
+          attributes: ['id', 'nome'],
+        }],
+      });
+
+      return res.json({ totalCount, salas });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: [{ msg: 'Server error.' }] });
@@ -18,7 +45,12 @@ module.exports = {
     try {
       const { id } = req.params;
       const sala = await Sala.findByPk(id, {
-        attributes: ['id', 'nome_sala']
+        attributes: ['id', 'nome_sala'],
+        include: [{
+          model: Professor,
+          as: 'professor',
+          attributes: ['id', 'nome'],
+        }],
       });
       
       if(!sala) {
@@ -34,11 +66,19 @@ module.exports = {
 
   async store(req, res) {
     try {
-      const { nome_sala } = req.body;
+      const { nome_sala, professores } = req.body;
 
       const sala = await Sala.create({
         nome_sala
       });
+
+      if(professores) {
+        await Promise.all(professores.map(async(professorId) => {
+          const professor = await Professor.findByPk(professorId);
+
+          await professor.setSala(sala);
+        }));
+      }
       
       return res.json({
         id: sala.id,
@@ -53,7 +93,7 @@ module.exports = {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const { nome_sala } = req.body;
+      const { nome_sala, professores, professoresToRemove } = req.body;
 
       const sala = await Sala.findByPk(id);
       
@@ -64,6 +104,21 @@ module.exports = {
       await sala.update({
         nome_sala
       });
+
+      if(professores) {
+        await Promise.all(professores.map(async(professorId) => {
+          const professor = await Professor.findByPk(professorId);
+
+          await professor.setSala(sala);
+        }));
+      }
+      if(professoresToRemove) {
+        await Promise.all(professoresToRemove.map(async(professorId) => {
+          const professor = await Professor.findByPk(professorId);
+
+          await professor.setSala(null);
+        }));
+      }
 
       return res.json({
         id: sala.id,

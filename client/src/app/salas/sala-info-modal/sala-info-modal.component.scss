@@ -1,0 +1,23 @@
+.medium-weight {
+  font-weight: 500;
+}
+
+mat-selection-list {
+  max-height: 20vh;
+  overflow: auto;
+}
+
+@media only screen and (max-width: 768px) {
+  mat-selection-list {
+    max-height: 40vh;
+    overflow: auto;
+  }
+}
+
+::ng-deep .mat-list-text {
+  display: block !important;
+  white-space: nowrap;
+  overflow: hidden !important;
+  width: 100%;
+  text-overflow: ellipsis;
+}

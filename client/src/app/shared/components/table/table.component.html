@@ -1,0 +1,59 @@
+<form [formGroup]="searchForm" (ngSubmit)="onSubmitHandler()">
+  <div fxLayoutAlign="space-evenly center">
+    <mat-form-field class="half-width" appearance="fill">
+      <mat-label>Pesquisar</mat-label>
+      <input matInput formControlName="search">
+    </mat-form-field>
+  
+    <button class="top-button" mat-fab color="primary" type="submit">
+      <mat-icon>search</mat-icon>
+    </button>
+
+    <button class="top-button" mat-fab color="primary" type="button" (click)="openAddHandler()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  
+</form>
+
+<ng-container *ngIf="dataSource.length > 0">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <ng-container *ngFor="let column of tableColumns.columnsName, index as i" matColumnDef="{{ column }}">
+      <th mat-header-cell *matHeaderCellDef
+        [ngClass]="{'actions-column': column === 'actions'}"> 
+          {{ tableColumns.columnsText[i] }} 
+      </th>
+      <ng-container *matCellDef="let element" >
+        <td mat-cell *ngIf="column !== 'actions'; else actionCell"> {{ element[column] }} </td>
+        <ng-template #actionCell>
+          <td mat-cell>
+            <button class="action-button" mat-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item *ngFor="let action of tableActions" 
+                (click)="onActionClickHandler(element, action)">
+                  {{ action }}
+              </button>
+            </mat-menu>
+          </td>
+        </ng-template>
+      </ng-container>
+      
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="tableColumns.columnsName"></tr>
+    <tr mat-row *matRowDef="let row; columns: tableColumns.columnsName;"></tr>
+  </table>
+  
+  <mat-paginator [length]="totalCount" (page)="setPage($event)"
+    [pageSize]="10" [hidePageSize]="true" [pageIndex]="currentPage.getValue()"
+    showFirstLastButtons class="mat-elevation-z8">
+  </mat-paginator>
+  
+</ng-container>
+
+<div *ngIf="dataSource.length === 0" fxLayoutAlign="center center">
+  <h2>Não foi encontrado nenhum registro de <strong>{{ tableName }}</strong>.</h2>
+</div>

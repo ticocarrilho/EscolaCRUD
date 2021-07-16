@@ -1,0 +1,19 @@
+.content {
+  padding-top: 4em;
+  height: 100%;
+}
+
+mat-icon {
+  margin-right: 0.5em;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+  line-height: 36px;
+  padding: 0 16px 0 16px;
+  border-radius: 4px;
+  &:hover {
+    background: rgba(0,0,0,.4);
+  }
+}
