@@ -1,0 +1,18 @@
+<mat-toolbar color="primary" class="mat-elevation-z6">
+  <mat-icon>school</mat-icon>
+  <span>Escola CRUD</span>
+  <div fxFlex></div>
+  <a routerLink="/salas">
+    <span>Salas</span>
+  </a>
+  <a routerLink="/professores">
+    <span>Professores</span>
+  </a>
+  <a routerLink="/alunos">
+    <span>Alunos</span>
+  </a>
+</mat-toolbar>
+
+<div class="content" fxLayoutAlign="center start">
+  <router-outlet></router-outlet>
+</div>
