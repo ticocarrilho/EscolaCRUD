@@ -5,19 +5,21 @@ import { LayoutComponent } from './shared/components/layout/layout.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/salas',
-    pathMatch: 'full' 
-  },
-  {
-    path: '',
     component: LayoutComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'salas',
+        pathMatch: 'full',
+      }, {
         path: 'salas',
-        loadChildren: () => import('./salas/salas.module').then(m => m.SalasModule)
+        loadChildren: () => import('./salas/salas.module').then(m => m.SalasModule),
+        data: {
+          title: 'Salas'
+        }
       }
     ]
-  }
+  },
 ];
 
 @NgModule({
