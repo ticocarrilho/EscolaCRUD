@@ -30,13 +30,13 @@ class AppController {
     this.express.use(express.json());
   }
   routes() {
+    this.express.use(routes);
     if(process.env.NODE_ENV === 'production') {
       this.express.use(express.static(path.join(__dirname, '..', 'client')));
       this.express.get('*', (req, res) => {
-        return res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
+        res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
       });
     }
-    this.express.use(routes);
   }
 }
 
