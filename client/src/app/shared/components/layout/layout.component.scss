@@ -1,13 +1,18 @@
 .content {
-  padding-top: 4em;
+  padding: 4em 2em 2em 2em;
   height: 100%;
+  overflow: auto;
 }
 
-mat-icon {
+.school-icon {
   margin-right: 0.5em;
 }
 
-a {
+mat-sidenav {
+  width: 50vw;
+}
+
+.text-toolbar {
   color: #fff;
   text-decoration: none;
   line-height: 36px;

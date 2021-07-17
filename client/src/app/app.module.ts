@@ -8,11 +8,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { ToastrModule } from 'ngx-toastr';
 import { LayoutComponent } from './shared/components/layout/layout.component';
 import { ErrorInterceptor } from './core/interceptor/error.interceptor';
 import { HttpApiInterceptor } from './core/interceptor/httpApi.interceptor';
 import { environment } from 'src/environments/environment';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { environment } from 'src/environments/environment';
     FlexLayoutModule,
     MatToolbarModule,
     MatIconModule,
+    MatSidenavModule,
+    MatButtonModule,
     ToastrModule.forRoot({
       preventDuplicates: true,
     }),
