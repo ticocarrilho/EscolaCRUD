@@ -18,7 +18,7 @@ export class SalasService {
 
   getSalas(salaName: string = '', page: string = ''): Observable<GetSalasReturn> {
     return this.http
-      .get<GetSalasReturn>('http://localhost:3001/api/sala', {
+      .get<GetSalasReturn>('sala', {
         headers: {
           search: salaName,
           page: page
@@ -28,27 +28,27 @@ export class SalasService {
 
   getSala(id: number): Observable<Sala> {
     return this.http
-      .get<Sala>(`http://localhost:3001/api/sala/${id}`);
+      .get<Sala>(`sala/${id}`);
   }
 
   postSala(body: SalaBody): Observable<Sala> {
     return this.http
-      .post<Sala>('http://localhost:3001/api/sala', body);
+      .post<Sala>('sala', body);
   }
 
   patchSala(id: number, body: SalaBody): Observable<Sala> {
     return this.http
-      .patch<Sala>(`http://localhost:3001/api/sala/${id}`, body);
+      .patch<Sala>(`sala/${id}`, body);
   }
 
   deleteSala(id: number): Observable<void> {
     return this.http
-      .delete<void>(`http://localhost:3001/api/sala/${id}`);
+      .delete<void>(`sala/${id}`);
   }
 
   getProfessores() {
     return this.http
-      .get('http://localhost:3001/api/professor');
+      .get('professor');
   }
 
 }
