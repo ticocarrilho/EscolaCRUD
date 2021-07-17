@@ -6,7 +6,6 @@ const path = require('path');
 const routes = require('./routes');
 
 class AppController {
-  clientPath = path.join(__dirname, '..', 'client');
 
   constructor() {
     this.express = express();
@@ -32,7 +31,10 @@ class AppController {
   }
   routes() {
     if(process.env.NODE_ENV === 'production') {
-      this.express.use(express.static(this.clientPath));
+      this.express.use(express.static(path.join(__dirname, '..', 'client')));
+      this.express.get('*', (req, res) => {
+        return res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
+      });
     }
     this.express.use(routes);
   }
