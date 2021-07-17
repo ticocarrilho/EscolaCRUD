@@ -5,7 +5,7 @@
       <input matInput formControlName="search">
     </mat-form-field>
   
-    <button class="top-button" mat-fab color="primary" type="submit" [disabled]="tableDataSource.length === 0">
+    <button class="top-button" mat-fab color="primary" type="submit">
       <mat-icon [@inOutAnimation] *ngIf="searchForm.get('search')?.value !== ''">search</mat-icon>
       <mat-icon [@inOutAnimation] *ngIf="searchForm.get('search')?.value === ''">refresh</mat-icon>
     </button>

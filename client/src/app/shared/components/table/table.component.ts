@@ -33,7 +33,11 @@ export class TableComponent implements OnInit {
   @Input() set dataSource(data: any[]) {
     if(data) {
       if(data.length === 0) {
-        this.searchForm.get('search')?.disable();
+        if(this.searchForm.get('search')?.touched) {
+          this.searchForm.get('search')?.enable();
+        } else {
+          this.searchForm.get('search')?.disable();
+        }
       } else {
         this.searchForm.get('search')?.enable();
       }
