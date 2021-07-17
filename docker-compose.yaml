@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports: 
+      - '5432:5432'
+    volumes:
+      - escola-db:/var/lib/postgresql/data
+
+  escola-crud:
+    build:
+      context: .
+    environment:
+      DB_NAME_PROD: escola-prod
+      DB_USER_PROD: postgres
+      DB_PASS_PROD: postgres
+      DB_HOST_PROD: postgres
+    depends_on:
+      - postgres
+    ports:
+      - '3001:3001'
+        
+volumes:
+  escola-db:
