@@ -11,8 +11,7 @@ services:
       - escola-db:/var/lib/postgresql/data
 
   escola-crud:
-    build:
-      context: .
+    image: ticocarrilho/escola-crud:latest
     environment:
       DB_NAME_PROD: escola-prod
       DB_USER_PROD: postgres
