@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { BehaviorSubject } from 'rxjs';
@@ -8,13 +9,37 @@ import { TableColumns } from 'src/app/core/models/tableColumns.type';
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss']
+  styleUrls: ['./table.component.scss'],
+  animations: [
+    trigger(
+      'inOutAnimation', 
+      [
+        transition(
+          ':enter', 
+          [
+            style({ height: 0, opacity: 0 }),
+            animate('0.5s ease-out', 
+                    style({ height: 300, opacity: 1 }))
+          ]
+        )
+      ]
+    )
+  ]
 })
 export class TableComponent implements OnInit {
   @Output() search: EventEmitter<string> = new EventEmitter<string>();
   @Output() selectedAction: EventEmitter<ActionEmitted> = new EventEmitter<ActionEmitted>();
   @Input() tableName!: string;
-  @Input() dataSource!: any[];
+  @Input() set dataSource(data: any[]) {
+    if(data) {
+      if(data.length === 0) {
+        this.searchForm.get('search')?.disable();
+      } else {
+        this.searchForm.get('search')?.enable();
+      }
+      this.tableDataSource = data;
+    }
+  };
   @Input() tableColumns!: TableColumns;
   @Input() openAddHandler!: Function;
   @Input() currentPage!: BehaviorSubject<number>;
@@ -26,9 +51,10 @@ export class TableComponent implements OnInit {
   }
 
   searchForm: FormGroup;
+  tableDataSource!: any[];
   tableActions!: string[];
 
-  constructor(private fb: FormBuilder) { 
+  constructor(private fb: FormBuilder) {
     this.searchForm = this.fb.group({
       search: ''
     });

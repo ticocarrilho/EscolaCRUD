@@ -1,18 +1,46 @@
 <mat-toolbar color="primary" class="mat-elevation-z6">
-  <mat-icon>school</mat-icon>
+  <mat-icon class="school-icon">school</mat-icon>
   <span>Escola CRUD</span>
   <div fxFlex></div>
-  <a routerLink="/salas">
-    <span>Salas</span>
-  </a>
-  <a routerLink="/professores">
-    <span>Professores</span>
-  </a>
-  <a routerLink="/alunos">
-    <span>Alunos</span>
-  </a>
+  <div fxShow="true" fxHide.lt-md="true">
+    <a class="text-toolbar" routerLink="/salas">
+      <span>Salas</span>
+    </a>
+    <a class="text-toolbar" routerLink="/professores">
+      <span>Professores</span>
+    </a>
+    <a class="text-toolbar" routerLink="/alunos">
+      <span>Alunos</span>
+    </a>
+  </div>
+
+  <div fxShow="true" fxHide.gt-sm="true">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>reorder</mat-icon>
+    </button>
+  </div>
 </mat-toolbar>
 
-<div class="content" fxLayoutAlign="center start">
-  <router-outlet></router-outlet>
-</div>
+<mat-sidenav-container fxFlexFill class="example-container">
+
+  <mat-sidenav position="end" #sidenav fxLayout="column">
+    <div fxLayout="column">
+      <a routerLink="/salas" mat-button>
+        <span>Salas</span>
+      </a>
+      <a routerLink="/professores" mat-button>
+        <span>Professores</span>
+      </a>
+      <a routerLink="/alunos"mat-button>
+        <span>Alunos</span>
+      </a>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content fxFlexFill>
+    <div class="content" fxLayoutAlign="center start">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
