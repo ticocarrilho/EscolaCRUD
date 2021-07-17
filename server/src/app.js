@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const path = require('path');
 const routes = require('./routes');
 
 class AppController {
@@ -16,6 +17,12 @@ class AppController {
     if(process.env.NODE_ENV !== 'production') {
       this.express.use(cors({
         origin: '*'
+      }));
+    } else if(process.env.NODE_ENV === 'production') {
+      this.express.use(cors({
+        credentials: true,
+        origin: 'https://escola.carrilho.tech',
+        optionsSuccessStatus: 200
       }));
     }
     

@@ -11,6 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { ToastrModule } from 'ngx-toastr';
 import { LayoutComponent } from './shared/components/layout/layout.component';
 import { ErrorInterceptor } from './core/interceptor/error.interceptor';
+import { HttpApiInterceptor } from './core/interceptor/httpApi.interceptor';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { ErrorInterceptor } from './core/interceptor/error.interceptor';
     }),
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: 'BASE_API_URL', useValue: environment.apiUrl },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpApiInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
