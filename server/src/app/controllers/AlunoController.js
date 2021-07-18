@@ -84,7 +84,7 @@ module.exports = {
     try {
       const { nome, professor } = req.body;
 
-      if(professor !== undefined) {
+      if(professor !== undefined && professor !== '') {
         const findProfessor = await Professor.findByPk(professor);
         
         if(!findProfessor) {
@@ -94,7 +94,7 @@ module.exports = {
 
       const aluno = await Aluno.create({
         nome,
-        ...(professor !== undefined && {
+        ...((professor !== undefined && professor !== '') && {
           id_professor: professor
         })
       });
@@ -134,7 +134,7 @@ module.exports = {
         return res.status(404).json({ error: [{ msg: 'Aluno não encontrado.' }] }); 
       }
 
-      if(professor !== undefined) {
+      if(professor !== undefined && professor !== '') {
         const findProfessor = await Professor.findByPk(professor);
         
         if(!findProfessor) {
@@ -144,7 +144,7 @@ module.exports = {
 
       await aluno.update({
         nome,
-        ...(professor !== undefined && {
+        ...((professor !== undefined && professor !== '') && {
           id_professor: professor
         })
       });

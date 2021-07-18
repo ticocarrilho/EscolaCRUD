@@ -74,7 +74,7 @@ module.exports = {
     try {
       const { nome, sala } = req.body;
 
-      if(sala !== undefined) {
+      if(sala !== undefined && sala !== '') {
         const findSala = await Sala.findByPk(sala);
         
         if(!findSala) {
@@ -84,7 +84,7 @@ module.exports = {
 
       const professor = await Professor.create({
         nome,
-        ...(sala !== undefined && {
+        ...((sala !== undefined && sala !== '') && {
           id_sala: sala
         })
       });
@@ -106,7 +106,7 @@ module.exports = {
     try {
       const { id } = req.params;
       const { nome, sala } = req.body;
-      console.log(req.body)
+
       const professor = await Professor.findByPk(id, {
         include: [{
           model: Sala,
@@ -119,7 +119,7 @@ module.exports = {
         return res.status(404).json({ error: [{ msg: 'Professor não encontrado.' }] }); 
       }
 
-      if(sala !== undefined) {
+      if(sala !== undefined && sala !== '') {
         const findSala = await Sala.findByPk(sala);
         
         if(!findSala) {
@@ -129,7 +129,7 @@ module.exports = {
 
       await professor.update({
         nome,
-        ...(sala !== undefined && {
+        ...((sala !== undefined && sala !== '') && {
           id_sala: sala
         })
       });
