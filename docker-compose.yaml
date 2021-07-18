@@ -3,8 +3,8 @@ services:
   postgres:
     image: postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: ${DB_USER_PROD}
+      POSTGRES_PASSWORD: ${DB_PASS_PROD}
     ports: 
       - '5432:5432'
     volumes:
@@ -13,10 +13,10 @@ services:
   escola-crud:
     image: ticocarrilho/escola-crud:latest
     environment:
-      DB_NAME_PROD: escola-prod
-      DB_USER_PROD: postgres
-      DB_PASS_PROD: postgres
-      DB_HOST_PROD: postgres
+      DB_NAME_PROD: ${DB_NAME_PROD}
+      DB_USER_PROD: ${DB_USER_PROD}
+      DB_PASS_PROD: ${DB_PASS_PROD}
+      DB_HOST_PROD: ${DB_HOST_PROD}
     depends_on:
       - postgres
     ports:
