@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>{{ data.edit ? 'Editar' : 'Criar' }} Aluno</h1>
+
+<div *ngIf="loading; else content" fxLayoutAlign="center center">
+  <mat-spinner></mat-spinner>
+</div>
+
+<ng-template #content>
+  <div mat-dialog-content [formGroup]="alunoForm">
+
+    <mat-form-field class="full-width" appearance="fill">
+      <mat-label>Nome do Aluno</mat-label>
+      <input matInput formControlName="nome">
+      <mat-error *ngIf="alunoForm.get('nome')?.hasError('required')">
+        O campo de nome é <strong>obrigatório</strong>.
+      </mat-error>
+      <mat-error *ngIf="alunoForm.get('nome')?.hasError('maxlength')">
+        O campo de nome não pode ter mais de <strong>150 caracteres</strong>.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width" appearance="fill">
+      <mat-label>Professores Disponíveis</mat-label>
+      <mat-select formControlName="professor">
+        <mat-option *ngFor="let professor of professores" [value]="professor.id">
+          {{ professor.nome }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  
+  <div mat-dialog-actions fxLayoutAlign="space-around center">
+    <button mat-button (click)="onCancelClick()" cdkFocusInitial>Cancelar</button>
+    <button mat-button [mat-dialog-close]="alunoForm.getRawValue()"
+      [disabled]="alunoForm.status !== 'VALID'">
+      {{ data.edit ? 'Editar' : 'Criar' }} Aluno
+    </button>
+  </div>
+</ng-template>

@@ -1,9 +1,36 @@
+const { Op } = require('sequelize');
 const { Aluno, Sala, Professor } = require('../models');
 
 module.exports = {
   async index(req, res) {
     try {
+      const { page, search } = req.headers;
+
+      const totalCount = await Aluno.count({
+        ...((search !== undefined && search !== '') && {
+          where: {
+            nome: {
+              [Op.like]: `%${search}%`
+            }
+          }
+        })
+      });
+
       const alunos = await Aluno.findAll({
+        ...((search !== undefined && search !== '') && {
+          where: {
+            nome: {
+              [Op.like]: `%${search}%`
+            }
+          }
+        }),
+        ...((page !== undefined && page !== '') && {
+          offset: page * 10,
+          limit: 10,
+        }),
+        order: [
+          ['id', 'ASC'],
+        ],
         attributes: ['id', 'nome'],
         include: [{
           model: Professor,
@@ -17,7 +44,7 @@ module.exports = {
         }]
       });
       
-      return res.json(alunos);
+      return res.json({ totalCount, alunos });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: [{ msg: 'Server error.' }] });
@@ -55,19 +82,21 @@ module.exports = {
 
   async store(req, res) {
     try {
-      const { nome, id_professor } = req.body;
+      const { nome, professor } = req.body;
 
-      if(id_professor !== undefined) {
-        const professor = await Professor.findByPk(id_professor);
+      if(professor !== undefined) {
+        const findProfessor = await Professor.findByPk(professor);
         
-        if(!professor) {
+        if(!findProfessor) {
           return res.status(404).json({ error: [{ msg: 'Professor não encontrado.' }] }); 
         }
       }
 
       const aluno = await Aluno.create({
         nome,
-        id_professor
+        ...(professor !== undefined && {
+          id_professor: professor
+        })
       });
       
       aluno.professor = await aluno.getProfessor();
@@ -86,7 +115,7 @@ module.exports = {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const { nome, id_professor } = req.body;
+      const { nome, professor } = req.body;
 
       const aluno = await Aluno.findByPk(id, {
         include: [{
@@ -105,17 +134,19 @@ module.exports = {
         return res.status(404).json({ error: [{ msg: 'Aluno não encontrado.' }] }); 
       }
 
-      if(id_professor !== undefined) {
-        const professor = await Professor.findByPk(id_professor);
+      if(professor !== undefined) {
+        const findProfessor = await Professor.findByPk(professor);
         
-        if(!professor) {
+        if(!findProfessor) {
           return res.status(404).json({ error: [{ msg: 'Professor não encontrado.' }] }); 
         }
       }
 
       await aluno.update({
         nome,
-        id_professor
+        ...(professor !== undefined && {
+          id_professor: professor
+        })
       });
 
       await aluno.reload();

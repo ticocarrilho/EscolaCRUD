@@ -26,7 +26,7 @@ describe('POST /api/aluno', () => {
       .post('/api/aluno')
       .send({
         nome: 'aluno test',
-        id_professor: professor.id,
+        professor: professor.id,
       });
 
     expect(response.status).toBe(200);
@@ -66,7 +66,7 @@ describe('POST /api/aluno', () => {
       .post('/api/aluno')
       .send({
         nome: 'aluno test',
-        id_professor: 9999,
+        professor: 9999,
       });
 
     expect(response.status).toBe(404);

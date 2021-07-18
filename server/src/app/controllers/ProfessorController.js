@@ -1,9 +1,36 @@
+const { Op } = require('sequelize');
 const { Sala, Professor } = require('../models');
 
 module.exports = {
   async index(req, res) {
     try {
+      const { page, search } = req.headers;
+
+      const totalCount = await Professor.count({
+        ...((search !== undefined && search !== '') && {
+          where: {
+            nome: {
+              [Op.like]: `%${search}%`
+            }
+          }
+        })
+      });
+
       const professores = await Professor.findAll({
+        ...((search !== undefined && search !== '') && {
+          where: {
+            nome: {
+              [Op.like]: `%${search}%`
+            }
+          }
+        }),
+        ...((page !== undefined && page !== '') && {
+          offset: page * 10,
+          limit: 10,
+        }),
+        order: [
+          ['id', 'ASC'],
+        ],
         attributes: ['id', 'nome'],
         include: [{
           model: Sala,
@@ -12,7 +39,7 @@ module.exports = {
         }]
       });
       
-      return res.json(professores);
+      return res.json({ totalCount, professores });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: [{ msg: 'Server error.' }] });
@@ -45,19 +72,21 @@ module.exports = {
 
   async store(req, res) {
     try {
-      const { nome, id_sala } = req.body;
+      const { nome, sala } = req.body;
 
-      if(id_sala !== undefined) {
-        const sala = await Sala.findByPk(id_sala);
+      if(sala !== undefined) {
+        const findSala = await Sala.findByPk(sala);
         
-        if(!sala) {
+        if(!findSala) {
           return res.status(404).json({ error: [{ msg: 'Sala não encontrada.' }] }); 
         }
       }
 
       const professor = await Professor.create({
         nome,
-        id_sala
+        ...(sala !== undefined && {
+          id_sala: sala
+        })
       });
       
       professor.sala = await professor.getSala();
@@ -76,8 +105,8 @@ module.exports = {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const { nome, id_sala } = req.body;
-
+      const { nome, sala } = req.body;
+      console.log(req.body)
       const professor = await Professor.findByPk(id, {
         include: [{
           model: Sala,
@@ -90,17 +119,19 @@ module.exports = {
         return res.status(404).json({ error: [{ msg: 'Professor não encontrado.' }] }); 
       }
 
-      if(id_sala !== undefined) {
-        const sala = await Sala.findByPk(id_sala);
+      if(sala !== undefined) {
+        const findSala = await Sala.findByPk(sala);
         
-        if(!sala) {
+        if(!findSala) {
           return res.status(404).json({ error: [{ msg: 'Sala não encontrada.' }] }); 
         }
       }
 
       await professor.update({
         nome,
-        id_sala
+        ...(sala !== undefined && {
+          id_sala: sala
+        })
       });
 
       await professor.reload();

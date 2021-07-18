@@ -18,9 +18,11 @@ describe('GET /api/aluno', () => {
     }));
 
     const response = await request(app)
-      .get('/api/aluno');
+      .get('/api/aluno')
+      .set('page', '');
 
-    expect(response.body).toHaveLength(names.length);
+    expect(response.body.alunos).toHaveLength(names.length);
+    expect(response.body.totalCount).toBe(names.length);
   });
 
   it('should be able to get an aluno', async () => {
@@ -33,6 +35,20 @@ describe('GET /api/aluno', () => {
 
     expect(response.status).toBe(200);
     expect(response.body.nome).toBe('aluno1');
+  });
+
+  it('should be able to search a aluno', async () => {
+    const aluno = await factory.create('Aluno', {
+      nome: 'aluno1'
+    });
+
+    const response = await request(app)
+      .get('/api/aluno/')
+      .set('page', 0)
+      .set('search', aluno.nome);
+
+    expect(response.status).toBe(200);
+    expect(response.body.alunos[0].nome).toBe('aluno1');
   });
 
   it('should return 404 when trying to get an aluno that does not exists', async () => {

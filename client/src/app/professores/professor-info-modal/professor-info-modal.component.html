@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Informações do Professor</h1>
+
+<div *ngIf="loading; else content" fxLayoutAlign="center center">
+  <mat-spinner></mat-spinner>
+</div>
+
+<ng-template #content>
+  <div mat-dialog-content>
+    <h3>Nome do Professor: <span class="medium-weight">{{ professor.nome }}</span></h3>
+  
+    <p *ngIf="!professor.sala">
+      Esse professor não está atribuido a uma sala.
+    </p>
+    <h3 *ngIf="professor.sala">
+      Nome da Sala: <span class="medium-weight">{{ professor.sala.nome_sala }}</span>
+    </h3>
+  </div>
+  
+  <div mat-dialog-actions fxLayoutAlign="space-around center">
+    <button mat-button (click)="onCancelClick()" cdkFocusInitial>Fechar</button>
+    <button mat-button [mat-dialog-close]="getActionBody('Deletar Professor')">
+        Deletar Professor
+    </button>
+    <button mat-button [mat-dialog-close]="getActionBody('Editar Professor')">
+      Editar Professor
+    </button>
+  </div>
+</ng-template>

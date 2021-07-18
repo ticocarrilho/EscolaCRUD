@@ -48,6 +48,7 @@ export class TableComponent implements OnInit {
   @Input() openAddHandler!: Function;
   @Input() currentPage!: BehaviorSubject<number>;
   @Input() totalCount!: number;
+  @Input() customStyleHandler!: Function;
   @Input() set actions (actions: string[]) {
     this.tableColumns.columnsName.push('actions');
     this.tableColumns.columnsText.push('Ações');

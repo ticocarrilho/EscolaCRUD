@@ -26,7 +26,10 @@
           {{ tableColumns.columnsText[i] }} 
       </th>
       <ng-container *matCellDef="let element" >
-        <td mat-cell *ngIf="column !== 'actions'; else actionCell"> {{ element[column] }} </td>
+        <td mat-cell *ngIf="column !== 'actions'; else actionCell" 
+          [ngStyle]="customStyleHandler(element, column)">
+            {{ element[column] }}
+        </td>
         <ng-template #actionCell>
           <td mat-cell>
             <button class="action-button" mat-button [matMenuTriggerFor]="menu">

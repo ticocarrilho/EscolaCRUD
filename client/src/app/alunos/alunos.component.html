@@ -1,0 +1,11 @@
+<div *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div [hidden]="loading">
+  <app-table [dataSource]="alunos" [currentPage]="currentPage" [tableName]="'Alunos'"
+  [tableColumns]="tableColumns" [totalCount]="totalCount" [customStyleHandler]="customStyleHandler"
+  (search)="onSearchHandler($event)" [openAddHandler]="openAddDialog.bind(this)"
+  [actions]="tableActions" (selectedAction)="onActionEmitHandler($event)">
+  </app-table>
+</div>
