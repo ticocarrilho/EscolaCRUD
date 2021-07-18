@@ -27,7 +27,7 @@
       </th>
       <ng-container *matCellDef="let element" >
         <td mat-cell *ngIf="column !== 'actions'; else actionCell" 
-          [ngStyle]="customStyleHandler(element, column)">
+          [ngStyle]="customStyleHandler && customStyleHandler(element, column)">
             {{ element[column] }}
         </td>
         <ng-template #actionCell>
