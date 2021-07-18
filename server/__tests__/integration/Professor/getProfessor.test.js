@@ -18,9 +18,11 @@ describe('GET /api/professor', () => {
     }));
 
     const response = await request(app)
-      .get('/api/professor');
+      .get('/api/professor')
+      .set('page', '');
 
-    expect(response.body).toHaveLength(names.length);
+      expect(response.body.professores).toHaveLength(names.length);
+      expect(response.body.totalCount).toBe(names.length);
   });
 
   it('should be able to get a professor', async () => {
@@ -33,6 +35,20 @@ describe('GET /api/professor', () => {
 
     expect(response.status).toBe(200);
     expect(response.body.nome).toBe('professor1');
+  });
+
+  it('should be able to search a professor', async () => {
+    const professor = await factory.create('Professor', {
+      nome: 'prof1'
+    });
+
+    const response = await request(app)
+      .get('/api/professor/')
+      .set('page', 0)
+      .set('search', professor.nome);
+
+    expect(response.status).toBe(200);
+    expect(response.body.professores[0].nome).toBe('prof1');
   });
 
   it('should return 404 when trying to get a professor that does not exists', async () => {

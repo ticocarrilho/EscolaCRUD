@@ -17,6 +17,18 @@ const routes: Routes = [
         data: {
           title: 'Salas'
         }
+      }, {
+        path: 'professores',
+        loadChildren: () => import('./professores/professores.module').then(m => m.ProfessoresModule),
+        data: {
+          title: 'Professores'
+        }
+      }, {
+        path: 'alunos',
+        loadChildren: () => import('./alunos/alunos.module').then(m => m.AlunosModule),
+        data: {
+          title: 'Alunos'
+        }
       }
     ]
   },

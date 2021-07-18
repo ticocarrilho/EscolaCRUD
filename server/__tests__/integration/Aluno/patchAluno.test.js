@@ -29,7 +29,7 @@ describe('PATCH /api/aluno', () => {
     const response = await request(app)
       .patch(`/api/aluno/${aluno.id}`)
       .send({
-        id_professor: professor.id
+        professor: professor.id
       });
 
     expect(response.status).toBe(200);
@@ -73,7 +73,7 @@ describe('PATCH /api/aluno', () => {
     const response = await request(app)
       .patch(`/api/aluno/${aluno.id}`)
       .send({
-        id_professor: 9999
+        professor: 9999
       });
 
     expect(response.status).toBe(404);

@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { Sala, Professor } = require('../models');
 
 module.exports = {
@@ -8,7 +9,9 @@ module.exports = {
       const totalCount = await Sala.count({
         ...((search !== undefined && search !== '') && {
           where: {
-            nome_sala: search
+            nome_sala: {
+              [Op.like]: `%${search}%`
+            }
           }
         })
       });
@@ -16,7 +19,9 @@ module.exports = {
       const salas = await Sala.findAll({
         ...((search !== undefined && search !== '') && {
           where: {
-            nome_sala: search
+            nome_sala: {
+              [Op.like]: `%${search}%`
+            }
           }
         }),
         ...((page !== undefined && page !== '') && {

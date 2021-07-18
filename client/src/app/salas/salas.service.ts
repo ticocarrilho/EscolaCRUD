@@ -46,9 +46,4 @@ export class SalasService {
       .delete<void>(`sala/${id}`);
   }
 
-  getProfessores() {
-    return this.http
-      .get('professor');
-  }
-
 }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { pairwise, startWith } from 'rxjs/operators';
 import { Professor } from 'src/app/core/models/professor.type';
+import { ProfessoresService } from 'src/app/professores/professores.service';
 import { SalasService } from '../salas.service';
 
 interface InjectedData {
@@ -22,7 +23,8 @@ export class SalaFormModalComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<SalaFormModalComponent>, 
     @Inject(MAT_DIALOG_DATA) public data: InjectedData,
-    private fb: FormBuilder, private salasService: SalasService
+    private fb: FormBuilder, private salasService: SalasService,
+    private professoresService: ProfessoresService
   ) {
     if(this.data.edit) {
       this.salaForm = this.fb.group({
@@ -96,8 +98,8 @@ export class SalaFormModalComponent implements OnInit {
 
   requestProfessores() {
     this.loading = true;
-    this.salasService.getProfessores()
-      .subscribe((data: any) => {
+    this.professoresService.getProfessores()
+      .subscribe((data: any) => { //!! TODO COLOCAR TYPE
         this.professores = data.filter((e: any) => e.sala === null);
       }, (err) => {
         this.dialogRef.close();

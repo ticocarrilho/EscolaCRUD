@@ -53,8 +53,7 @@ describe('GET /api/sala', () => {
 
   it('should return 404 when trying to get a sala that does not exists', async () => {
     const response = await request(app)
-      .get('/api/sala/3451')
-      .set('page', 0);
+      .get('/api/sala/3451');
 
     expect(response.status).toBe(404);
   });

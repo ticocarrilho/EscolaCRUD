@@ -1,0 +1,36 @@
+<h1 mat-dialog-title>Informações do Aluno</h1>
+
+<div *ngIf="loading; else content" fxLayoutAlign="center center">
+  <mat-spinner></mat-spinner>
+</div>
+
+<ng-template #content>
+  <div mat-dialog-content>
+    <h3>Nome do Aluno: <span class="medium-weight">{{ aluno.nome }}</span></h3>
+  
+    <p *ngIf="!aluno.professor; else hasProfessor">
+      Esse aluno não está atribuido a um professor.
+    </p>
+    <ng-template #hasProfessor>
+      <h3 *ngIf="aluno.professor">
+        Nome do Professor: <span class="medium-weight">{{ aluno.professor?.nome }}</span>
+      </h3>
+      <p *ngIf="!aluno.professor?.sala">
+        O professor do aluno não está atribuido a uma sala.
+      </p>
+      <h3 *ngIf="aluno.professor?.sala">
+        Nome da Sala: <span class="medium-weight">{{ aluno.professor?.sala?.nome_sala }}</span>
+      </h3>
+    </ng-template>
+  </div>
+  
+  <div mat-dialog-actions fxLayoutAlign="space-around center">
+    <button mat-button (click)="onCancelClick()" cdkFocusInitial>Fechar</button>
+    <button mat-button [mat-dialog-close]="getActionBody('Deletar Aluno')">
+        Deletar Aluno
+    </button>
+    <button mat-button [mat-dialog-close]="getActionBody('Editar Aluno')">
+      Editar Aluno
+    </button>
+  </div>
+</ng-template>
