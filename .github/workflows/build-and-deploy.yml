@@ -39,5 +39,5 @@ jobs:
      
           script: |
             [ ! -d "./EscolaCRUD" ] && git clone git@github.com:ticocarrilho/EscolaCRUD.git
-            cd EscolaCRUD
+            cd EscolaCRUD && git checkout master && git pull
             docker-compose pull && docker-compose up -d
