@@ -38,6 +38,8 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }} # User of the server you want to ssh into
      
           script: |
+            eval `ssh-agent`
+            cd ~/.ssh && ssh-add id_rsa_github && cd
             [ ! -d "./EscolaCRUD" ] && git clone git@github.com:ticocarrilho/EscolaCRUD.git
             cd EscolaCRUD && git checkout master && git pull
             docker-compose pull && docker-compose up -d
