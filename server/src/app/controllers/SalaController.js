@@ -10,7 +10,7 @@ module.exports = {
         ...((search !== undefined && search !== '') && {
           where: {
             nome_sala: {
-              [Op.like]: `%${search}%`
+              [Op.iLike]: `%${search}%`
             }
           }
         })
@@ -20,7 +20,7 @@ module.exports = {
         ...((search !== undefined && search !== '') && {
           where: {
             nome_sala: {
-              [Op.like]: `%${search}%`
+              [Op.iLike]: `%${search}%`
             }
           }
         }),
