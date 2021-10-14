@@ -21,7 +21,7 @@ class AppController {
     } else if(process.env.NODE_ENV === 'production') {
       this.express.use(cors({
         credentials: true,
-        origin: 'https://escola.carrilho.tech',
+        origin: 'https://escola.carrilho.dev',
         optionsSuccessStatus: 200
       }));
     }
